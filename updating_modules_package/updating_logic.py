@@ -3,6 +3,7 @@ import subprocess
 import os
 import ast
 import datetime
+import sys
 
 
 def updating_modules_from_github():
@@ -13,7 +14,11 @@ def updating_modules_from_github():
 
     for repo in repo_paths().values():
         print(f'Actualizando fichero versión {repo[-5:-1]}')
-        file_list = [name for name in os.listdir(repo) if os.path.isdir(os.path.join(repo, name))]
+        try:
+            file_list = [name for name in os.listdir(repo) if os.path.isdir(os.path.join(repo, name))]
+        except FileNotFoundError:
+            print(f'Error, no se encuentra creada la ruta {repo}')
+            sys.exit()
         unchanged_modules = ['--- Módulos sin actualizar ---\n', ]
         updated_modules = ['\n\n\n--- Módulos actualizados ---', ]
         updated_modules_view = []
